@@ -1,5 +1,10 @@
+import { Button } from '@/components/common/Button/Button';
+
 export default function Home() {
     return (
-        <div className="text-red-500">hello world</div>
+        <div>
+            <div className="text-red-500">hello world</div>
+            <Button isProcessing={false}>button</Button>
+        </div>
     );
 }
