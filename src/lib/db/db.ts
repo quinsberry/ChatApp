@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 // import { getAnalytics } from 'firebase/analytics';
 import { getDatabase } from 'firebase/database';
+import { FirestoreAdapter } from '@next-auth/firebase-adapter';
 
 const firebaseConfig = {
     apiKey: process.env.DB_API_KEY,
@@ -16,3 +17,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 // export const analytics = getAnalytics(app);
 export const db = getDatabase(app);
+export const dbAdapter = FirestoreAdapter(app);
