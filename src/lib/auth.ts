@@ -1,12 +1,12 @@
-import { NextAuthOptions, Session } from 'next-auth';
+import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
-import { dbAdapter } from '@/lib/db/db';
+import { db } from '@/lib/db/db';
 import { getUserById } from '@/lib/api/api';
-
+import { UpstashRedisAdapter } from '@next-auth/upstash-redis-adapter';
 
 export const authOptions: NextAuthOptions = {
-    adapter: dbAdapter,
+    adapter: UpstashRedisAdapter(db),
     session: {
         strategy: 'jwt',
     },
@@ -25,7 +25,7 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user }) {
-            const dbUser = await getUserById(user.id);
+            const dbUser = await getUserById(token.id);
             if (!dbUser) {
                 token.id = user.id;
                 return token;
@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
             }
             return session;
         },
-        redirect({ url, baseUrl }) {
+        redirect() {
             return '/dashboard';
         },
     },

@@ -1,20 +1,6 @@
-import { initializeApp } from 'firebase/app';
-// import { getAnalytics } from 'firebase/analytics';
-import { getDatabase } from 'firebase/database';
-import { FirestoreAdapter } from '@next-auth/firebase-adapter';
+import { Redis } from '@upstash/redis';
 
-const firebaseConfig = {
-    apiKey: process.env.DB_API_KEY,
-    authDomain: process.env.DB_AUTH_DOMAIN,
-    projectId: process.env.DB_PROJECT_ID,
-    storageBucket: process.env.DB_STORAGE_BUCKET,
-    messagingSenderId: process.env.DB_MESSAGING_SENDER_ID,
-    appId: process.env.DB_APP_ID,
-    measurementId: process.env.DB_MEASUREMENT_ID,
-    databaseURL: process.env.DB_DATABASE_ID,
-};
-
-const app = initializeApp(firebaseConfig);
-// export const analytics = getAnalytics(app);
-export const db = getDatabase(app);
-export const dbAdapter = FirestoreAdapter(app);
+export const db = new Redis({
+    url: process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_URL,
+    token: process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN,
+});

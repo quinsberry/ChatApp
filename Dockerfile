@@ -1,20 +1,25 @@
-FROM node:18-alpine AS deps
+FROM node:18-alpine AS base
+
+RUN npm i -g pnpm
+
+FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN  npm install --production
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install
 
-FROM node:18-alpine AS builder
+FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN npm run build
+RUN pnpm build
+RUN pnpm prune --prod
 
-FROM node:18-alpine AS runner
+FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
@@ -33,4 +38,4 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]

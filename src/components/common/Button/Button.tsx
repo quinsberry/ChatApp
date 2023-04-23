@@ -1,10 +1,9 @@
 import { ButtonHTMLAttributes, FunctionComponent } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
-import { ClassValue } from 'class-variance-authority/dist/types';
 import { LoaderIcon } from '@/assets/icons/LoaderIcon';
 import { cn } from '@/lib/utils/cn';
 
-const buttonVariants = cva<Record<string, Record<string, ClassValue>>>(
+const buttonVariants = cva(
     'active:scale-95 inline-flex items-center justify-center rounded-md text-sm font-medium transition-color focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none',
     {
         variants: {
@@ -26,20 +25,20 @@ const buttonVariants = cva<Record<string, Record<string, ClassValue>>>(
 );
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
-    isProcessing?: boolean;
+    isInProgress?: boolean;
 }
 
 export const Button: FunctionComponent<ButtonProps> = ({
     className,
     variant,
-    isProcessing,
+    isInProgress,
     size,
     children,
     ...props
 }) => {
     return (
-        <button className={cn(buttonVariants({ variant, size, className }))} disabled={isProcessing} {...props}>
-            {isProcessing ? <LoaderIcon className="mr-2 h-4 w-4 animate-spin" /> : null}
+        <button className={cn(buttonVariants({ variant, size, className }))} disabled={isInProgress} {...props}>
+            {isInProgress ? <LoaderIcon className="mr-2 h-4 w-4 animate-spin" /> : null}
             {children}
         </button>
     );
