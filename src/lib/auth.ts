@@ -1,8 +1,8 @@
 import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
-import { db } from '@/lib/db/db';
-import { getUserById } from '@/lib/api/api';
+import { db } from '@/lib/redis/server';
+import { getUserById } from '@/lib/redis/client';
 import { UpstashRedisAdapter } from '@next-auth/upstash-redis-adapter';
 
 export const authOptions: NextAuthOptions = {

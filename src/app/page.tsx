@@ -3,7 +3,7 @@ import { Button } from '@/components/common/Button/Button';
 import { getSession, signOut } from 'next-auth/react';
 import { Session } from 'next-auth';
 import { useEffect, useState } from 'react';
-import { fetchRedis, getUserById } from '@/lib/api/api';
+import { clientRedis, getUserById } from '@/lib/redis/client';
 
 export default function Home() {
     const [session, setSession] = useState<Session | null>(null);
@@ -17,7 +17,7 @@ export default function Home() {
     };
     return (
         <div>
-            <div className="text-red-500">hello world</div>
+            <div className='text-red-500'>hello world</div>
             <Button isInProgress={false} onClick={fetchData}>
                 fetch redis
             </Button>

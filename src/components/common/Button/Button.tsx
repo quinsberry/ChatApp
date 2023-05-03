@@ -38,7 +38,7 @@ export const Button: FunctionComponent<ButtonProps> = ({
 }) => {
     return (
         <button className={cn(buttonVariants({ variant, size, className }))} disabled={isInProgress} {...props}>
-            {isInProgress ? <LoaderIcon className="mr-2 h-4 w-4 animate-spin" /> : null}
+            {isInProgress ? <LoaderIcon className='mr-2 h-4 w-4 animate-spin' /> : null}
             {children}
         </button>
     );
