@@ -8,7 +8,7 @@ interface ProvidersProps {
 export const Providers: FunctionComponent<ProvidersProps> = ({ children }) => {
     return (
         <Fragment>
-            <Toaster position={'top-center'} reverseOrder={false} />
+            <Toaster position='top-center' reverseOrder={false} />
             {children}
         </Fragment>
     );
