@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, FunctionComponent } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
-import { LoaderIcon } from '@/assets/icons/LoaderIcon';
+import { Loader } from '@/components/common/icons/Loader';
 import { cn } from '@/lib/utils/cn';
 
 const buttonVariants = cva(
@@ -38,7 +38,7 @@ export const Button: FunctionComponent<ButtonProps> = ({
 }) => {
     return (
         <button className={cn(buttonVariants({ variant, size, className }))} disabled={isInProgress} {...props}>
-            {isInProgress ? <LoaderIcon className='mr-2 h-4 w-4 animate-spin' /> : null}
+            {isInProgress ? <Loader className='mr-2 h-4 w-4 animate-spin' /> : null}
             {children}
         </button>
     );

@@ -1,10 +1,10 @@
-import { forwardRef } from 'react';
+import { forwardRef, SVGProps } from 'react';
 
-interface GoogleIconProps {
+interface GoogleIconProps extends Omit<SVGProps<SVGSVGElement>, 'ref'> {
     className?: string;
 }
 
-export const GoogleIcon = forwardRef<SVGSVGElement, GoogleIconProps>(({ className }, ref) => {
+export const Google = forwardRef<SVGSVGElement, GoogleIconProps>(({ className, ...props }, ref) => {
     return (
         <svg
             ref={ref}
@@ -17,7 +17,8 @@ export const GoogleIcon = forwardRef<SVGSVGElement, GoogleIconProps>(({ classNam
             data-icon='github'
             role='img'
             xmlns='http://www.w3.org/2000/svg'
-            viewBox='0 0 24 24'>
+            viewBox='0 0 24 24'
+            {...props}>
             <path
                 d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z'
                 fill='#4285F4'
@@ -38,4 +39,4 @@ export const GoogleIcon = forwardRef<SVGSVGElement, GoogleIconProps>(({ classNam
         </svg>
     );
 });
-GoogleIcon.displayName = 'GoogleIcon';
+Google.displayName = 'Google';

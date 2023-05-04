@@ -1,10 +1,10 @@
 'use client';
 import { FunctionComponent, useState } from 'react';
 import { Button } from '@/components/common/Button/Button';
-import { GoogleIcon } from '@/assets/icons/GoogleIcon';
+import { Google } from '@/components/common/icons/Google';
 import { signIn } from 'next-auth/react';
 import toast from 'react-hot-toast';
-import { GithubIcon } from '@/assets/icons/GithubIcon';
+import { Github } from '@/components/common/icons/Github';
 
 interface LoginPageProps {}
 const LoginPage: FunctionComponent<LoginPageProps> = ({}) => {
@@ -47,7 +47,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = ({}) => {
                 type='button'
                 className='mx-auto w-full max-w-sm'
                 onClick={loginWithGoogle}>
-                {isLoading ? null : <GoogleIcon className='mr-2 h-4 w-4' />}
+                {isLoading ? null : <Google className='mr-2 h-4 w-4' />}
                 Google
             </Button>
             <Button
@@ -55,7 +55,7 @@ const LoginPage: FunctionComponent<LoginPageProps> = ({}) => {
                 type='button'
                 className='mx-auto mt-2 w-full max-w-sm'
                 onClick={loginWithGithub}>
-                {isLoading ? null : <GithubIcon className='mr-2 h-4 w-4' />}
+                {isLoading ? null : <Github className='mr-2 h-4 w-4' />}
                 Github
             </Button>
         </main>
