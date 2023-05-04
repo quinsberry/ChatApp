@@ -1,5 +1,5 @@
 'use client';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { Button } from '@/components/common/Button/Button';
 import axios, { AxiosError } from 'axios';
 import { z } from 'zod';
@@ -21,9 +21,6 @@ export const AddFriendForm: FunctionComponent<AddFriendFormProps> = ({}) => {
     } = useForm<FormData>({
         resolver: zodResolver(addFriendValidator),
     });
-    useEffect(() => {
-        console.log(`isSubmitting: ${isSubmitting}`);
-    }, [isSubmitting]);
 
     const addFriend = async (email: string): Promise<void> => {
         const emailValidation = addFriendValidator.safeParse({ email });

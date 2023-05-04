@@ -4,6 +4,7 @@ import { Google } from '@/components/common/icons/Google';
 import { Github } from '@/components/common/icons/Github';
 import { Loader } from '@/components/common/icons/Loader';
 import { Logout } from '@/components/common/icons/Logout';
+import { User } from '@/components/common/icons/User';
 
 export const Icons = {
     Logo,
@@ -12,6 +13,7 @@ export const Icons = {
     Github,
     Loader,
     Logout,
+    User,
 };
 
 export type Icon = keyof typeof Icons;

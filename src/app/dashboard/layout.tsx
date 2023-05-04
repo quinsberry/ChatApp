@@ -7,6 +7,8 @@ import Image from 'next/image';
 import { Logo } from '@/components/common/icons/Logo';
 import { Icon, Icons } from '@/components/common/icons';
 import { SignOutButton } from '@/components/SignOutButton/SignOutButton';
+import { FriendRequestsSidebarOption } from '@/components/FriendRequestsSidebarOption/FriendRequestsSidebarOption';
+import { getUserFriendRequestIds } from '@/lib/redis/server';
 
 interface LayoutProps {
     children: ReactNode;
@@ -27,11 +29,17 @@ const sidebarOptions: SidebarOption[] = [
     },
 ];
 
+export const metadata = {
+    title: 'Realtime chat app | Dashboard',
+    description: 'Your dashboard',
+};
+
 const Layout = async ({ children }: LayoutProps) => {
     const session = await getServerSession(authOptions);
     if (!session) {
         notFound();
     }
+    const unseenRequestCount = (await getUserFriendRequestIds(session.user.id)).length;
     return (
         <div className='flex h-screen w-full'>
             <aside className='flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6'>
@@ -62,6 +70,12 @@ const Layout = async ({ children }: LayoutProps) => {
                                     );
                                 })}
                             </ul>
+                        </li>
+                        <li>
+                            <FriendRequestsSidebarOption
+                                sessionId={session.user.id}
+                                initUnseenRequestCount={unseenRequestCount}
+                            />
                         </li>
                         <li className='-mx-6 mt-auto flex items-center'>
                             <div className='flex flex-1 items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900'>
