@@ -3,8 +3,7 @@ import React, { ButtonHTMLAttributes, FunctionComponent, useState } from 'react'
 import { Button } from '@/components/common/Button/Button';
 import { signOut } from 'next-auth/react';
 import toast from 'react-hot-toast';
-import { Logout } from '@/components/common/icons/Logout';
-import { Loader } from '@/components/common/icons/Loader';
+import { Loader2, LogOut } from 'lucide-react';
 
 interface SignOutButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
 
@@ -22,7 +21,7 @@ export const SignOutButton: FunctionComponent<SignOutButtonProps> = ({ ...props 
     };
     return (
         <Button {...props} variant='ghost' onClick={onSignOutClick}>
-            {isSigningOut ? <Loader className='h-4 w-4' /> : <Logout className='h-4 w-4' />}
+            {isSigningOut ? <Loader2 className='h-4 w-4' /> : <LogOut className='h-4 w-4' />}
         </Button>
     );
 };

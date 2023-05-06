@@ -2,7 +2,7 @@
 
 import { FunctionComponent, useState } from 'react';
 import Link from 'next/link';
-import { User } from '@/components/common/icons/User';
+import { User } from 'lucide-react';
 
 interface FriendRequestsSidebarOptionProps {
     sessionId: string;

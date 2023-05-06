@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, FunctionComponent } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
-import { Loader } from '@/components/common/icons/Loader';
 import { cn } from '@/lib/utils/cn';
+import { Loader2 } from 'lucide-react';
 
 const buttonVariants = cva(
     'active:scale-95 inline-flex items-center justify-center rounded-md text-sm font-medium transition-color focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none',
@@ -38,7 +38,7 @@ export const Button: FunctionComponent<ButtonProps> = ({
 }) => {
     return (
         <button className={cn(buttonVariants({ variant, size, className }))} disabled={isInProgress} {...props}>
-            {isInProgress ? <Loader className='mr-2 h-4 w-4 animate-spin' /> : null}
+            {isInProgress ? <Loader2 className='mr-2 h-4 w-4 animate-spin' /> : null}
             {children}
         </button>
     );

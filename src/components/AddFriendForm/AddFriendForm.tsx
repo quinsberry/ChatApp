@@ -59,7 +59,9 @@ export const AddFriendForm: FunctionComponent<AddFriendFormProps> = ({}) => {
                 </Button>
             </div>
             {errors.email ? <p className='mt-1 text-sm text-red-600'>{errors.email.message}</p> : null}
-            {showSuccessState ? <p className='mt-1 text-sm text-green-600'>Friend request sent!</p> : null}
+            {!errors.email && !isSubmitting && showSuccessState ? (
+                <p className='mt-1 text-sm text-green-600'>Friend request sent!</p>
+            ) : null}
         </form>
     );
 };

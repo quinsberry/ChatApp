@@ -1,14 +1,14 @@
 import { ReactNode } from 'react';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { authOptions } from '@/lib/auth/auth';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Logo } from '@/components/common/icons/Logo';
-import { Icon, Icons } from '@/components/common/icons';
 import { SignOutButton } from '@/components/SignOutButton/SignOutButton';
 import { FriendRequestsSidebarOption } from '@/components/FriendRequestsSidebarOption/FriendRequestsSidebarOption';
-import { getUserFriendRequestIds } from '@/lib/redis/server';
+import { UserPlus } from 'lucide-react';
+import { getUserFriendRequestIds } from '@/lib/redis/api';
 
 interface LayoutProps {
     children: ReactNode;
@@ -19,6 +19,12 @@ interface SidebarOption {
     href: string;
     Icon: Icon;
 }
+
+const Icons = {
+    Logo,
+    UserPlus,
+};
+type Icon = keyof typeof Icons;
 
 const sidebarOptions: SidebarOption[] = [
     {
@@ -49,6 +55,7 @@ const Layout = async ({ children }: LayoutProps) => {
                 <div className='text-xs font-semibold leading-6 text-gray-400'>Your chats</div>
                 <nav className='flex flex-1 flex-col'>
                     <ul role='list' className='flex flex-1 flex-col gap-y-7'>
+                        {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
                         <li>// chats that this user has</li>
                         <li>
                             <div className='text-xs font-semibold leading-6 text-gray-400'>Overview</div>
