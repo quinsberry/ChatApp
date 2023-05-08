@@ -1,7 +1,7 @@
 import { Redis } from '@upstash/redis';
-import { RedisFunctionParams } from '@/lib/redis';
+import { ExcludeNonFunctionPropertyNames, RedisFunctionParams } from '@/lib/redis';
 
-export const clientRedis = async <C extends keyof Redis>(
+export const clientRedis = async <C extends keyof ExcludeNonFunctionPropertyNames<Redis>>(
     command: C,
     ...args: RedisFunctionParams<Redis[C]>
 ): Promise<unknown> => {
