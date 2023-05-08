@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import { AddFriendForm } from '@/components/AddFriendForm/AddFriendForm';
+import { AddFriendForm } from '@/components/AddFriendForm';
 
 const page: FunctionComponent = () => {
     return (

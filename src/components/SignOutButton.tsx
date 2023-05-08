@@ -1,6 +1,6 @@
 'use client';
 import React, { ButtonHTMLAttributes, FunctionComponent, useState } from 'react';
-import { Button } from '@/components/common/Button/Button';
+import { Button } from '@/components/common/Button';
 import { signOut } from 'next-auth/react';
 import toast from 'react-hot-toast';
 import { Loader2, LogOut } from 'lucide-react';

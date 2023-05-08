@@ -1,6 +1,6 @@
 'use client';
 import { FunctionComponent, useState } from 'react';
-import { Button } from '@/components/common/Button/Button';
+import { Button } from '@/components/common/Button';
 import axios, { AxiosError } from 'axios';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';

@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth';
 import { notFound } from 'next/navigation';
 import { getUserById, getUserFriendRequestIds } from '@/lib/redis/api';
-import { FriendRequests } from '@/components/FriendRequests/FriendRequests';
+import { FriendRequests } from '@/components/FriendRequests';
 
 const page = async ({}) => {
     const session = await getServerSession(authOptions);
@@ -24,7 +24,7 @@ const page = async ({}) => {
     }, [] as IncomingFriendRequest[]);
     return (
         <main className='pt-8'>
-            <h1 className='mb-8 text-5xl font-bold'>Add a friend</h1>
+            <h1 className='mb-8 text-5xl font-bold'>Friend requests</h1>
             <div className='flex flex-col gap-4'>
                 <FriendRequests sessionId={session.user.id} incomingFriendsRequests={incomingFriendsRequests} />
             </div>

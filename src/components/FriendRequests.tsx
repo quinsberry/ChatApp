@@ -27,7 +27,7 @@ export const FriendRequests: FunctionComponent<FriendRequestsProps> = ({ session
     return (
         <Fragment>
             {friendRequests.length === 0 ? (
-                <p className='text-sm text-zinc-500'>Nothing to show here...</p>
+                <p className='text-sm text-zinc-500'>No new requests</p>
             ) : (
                 friendRequests.map(request => (
                     <div key={request.senderId} className='flex items-center gap-4'>
