@@ -30,7 +30,7 @@ export const Messages: FunctionComponent<MessagesProps> = ({
         <div
             id='messages'
             className={cn(
-                'scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch flex h-full flex-1 flex-col-reverse gap-4 overflow-y-auto p-3',
+                'scrollbar-thumb-gray scrollbar-thumb-rounded scrollbar-track-gray-lighter scrollbar-w-4 scrolling-touch flex h-full flex-1 flex-col-reverse gap-4 overflow-y-auto p-3',
                 {
                     'flex-col items-center justify-center': messages.length === 0,
                 }
