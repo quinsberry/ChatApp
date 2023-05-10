@@ -1,8 +1,11 @@
 'use client';
 
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { User } from 'lucide-react';
+import { addFriendSubscribe } from '@/lib/pusher/addFriend';
+import { friendsRequestSubscribe } from '@/lib/pusher/friendsRequest';
+import { denyFriendRequestSubscribe } from '@/lib/pusher/denyFriendRequest';
 
 interface FriendRequestsSidebarOptionProps {
     sessionId: string;
@@ -14,6 +17,16 @@ export const FriendRequestsSidebarOption: FunctionComponent<FriendRequestsSideba
     initUnseenRequestCount,
 }) => {
     const [unseenRequestCount, setUnseenRequestCount] = useState(initUnseenRequestCount);
+    useEffect(() => {
+        const unsubscribe1 = friendsRequestSubscribe(sessionId, () => setUnseenRequestCount(prev => prev + 1));
+        const unsubscribe2 = addFriendSubscribe(sessionId, () => setUnseenRequestCount(prev => prev - 1));
+        const unsubscribe3 = denyFriendRequestSubscribe(sessionId, () => setUnseenRequestCount(prev => prev - 1));
+        return () => {
+            unsubscribe1();
+            unsubscribe2();
+            unsubscribe3();
+        };
+    }, [sessionId]);
     return (
         <Link
             href='/dashboard/requests'

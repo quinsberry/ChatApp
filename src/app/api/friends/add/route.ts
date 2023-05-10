@@ -8,6 +8,7 @@ import {
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth';
 import { z } from 'zod';
+import { friendsRequestTrigger } from '@/lib/pusher/friendsRequest';
 
 export async function POST(req: Request) {
     try {
@@ -45,6 +46,8 @@ export async function POST(req: Request) {
         }
 
         await sendFriendRequest(userIdToAdd, session.user.id);
+        const sessionEmail = z.string().parse(session.user.email);
+        await friendsRequestTrigger(userIdToAdd, session.user.id, sessionEmail);
 
         return new Response('OK');
     } catch (error) {

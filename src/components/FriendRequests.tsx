@@ -1,8 +1,9 @@
 'use client';
-import React, { Fragment, FunctionComponent, useState } from 'react';
+import { Fragment, FunctionComponent, useEffect, useState } from 'react';
 import { Check, UserPlus, X } from 'lucide-react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { friendsRequestSubscribe } from '@/lib/pusher/friendsRequest';
 
 interface FriendRequestsProps {
     sessionId: string;
@@ -11,16 +12,28 @@ interface FriendRequestsProps {
 
 export const FriendRequests: FunctionComponent<FriendRequestsProps> = ({ sessionId, incomingFriendsRequests }) => {
     const router = useRouter();
+    const [isSendingRequest, setIsSendingRequest] = useState(false);
     const [friendRequests, setFriendRequests] = useState<IncomingFriendRequest[]>(incomingFriendsRequests);
 
+    useEffect(() => {
+        const unsubscribe = friendsRequestSubscribe(sessionId, ({ senderId, senderEmail }) =>
+            setFriendRequests(prev => [...prev, { senderId, senderEmail }])
+        );
+        return unsubscribe;
+    }, [sessionId]);
+
     const acceptFriend = async (senderId: string) => {
+        setIsSendingRequest(true);
         await axios.post('/api/friends/accept', { id: senderId });
+        setIsSendingRequest(false);
         setFriendRequests(prev => prev.filter(request => request.senderId !== senderId));
         router.refresh();
     };
 
     const denyFriend = async (senderId: string) => {
+        setIsSendingRequest(true);
         await axios.post('/api/friends/deny', { id: senderId });
+        setIsSendingRequest(false);
         setFriendRequests(prev => prev.filter(request => request.senderId !== senderId));
         router.refresh();
     };
@@ -35,6 +48,7 @@ export const FriendRequests: FunctionComponent<FriendRequestsProps> = ({ session
                         <p className='text-lg font-medium'>{request.senderEmail}</p>
                         <button
                             onClick={() => acceptFriend(request.senderId)}
+                            disabled={isSendingRequest}
                             aria-label='accept friend'
                             className='grid h-8 w-8 place-items-center rounded-full bg-indigo-600 transition hover:bg-indigo-700 hover:shadow-md'>
                             <Check className='h-3/4 w-3/4 font-semibold text-white' />
@@ -42,6 +56,7 @@ export const FriendRequests: FunctionComponent<FriendRequestsProps> = ({ session
 
                         <button
                             onClick={() => denyFriend(request.senderId)}
+                            disabled={isSendingRequest}
                             aria-label='deny friend'
                             className='grid h-8 w-8 place-items-center rounded-full bg-red-600 transition hover:bg-red-700 hover:shadow-md'>
                             <X className='h-3/4 w-3/4 font-semibold text-white' />

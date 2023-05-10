@@ -8,6 +8,8 @@ import {
     getUserById,
     removeUserFriendRequest,
 } from '@/lib/redis/api';
+import { addFriendTrigger } from '@/lib/pusher/addFriend';
+import { UserScheme } from '@/lib/redis/models/model-guards';
 
 export async function POST(req: Request) {
     try {
@@ -38,12 +40,15 @@ export async function POST(req: Request) {
         }
 
         const [user, friend] = await Promise.all([getUserById(session.user.id), getUserById(userIdToAdd)]);
+        const parsedUser = UserScheme.parse(user);
+        const parsedFriend = UserScheme.parse(friend);
 
         await Promise.all([
             addUserToFriendsList(session.user.id, userIdToAdd),
             addUserToFriendsList(userIdToAdd, session.user.id),
             removeUserFriendRequest(session.user.id, userIdToAdd),
         ]);
+        await Promise.all([addFriendTrigger(userIdToAdd, parsedUser), addFriendTrigger(session.user.id, parsedFriend)]);
         return new Response('OK');
     } catch (error) {
         if (error instanceof z.ZodError) {

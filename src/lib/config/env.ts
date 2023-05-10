@@ -1,6 +1,11 @@
 import { z } from 'zod';
 
 const envVariables = z.object({
+    PUSHER_APP_ID: z.string(),
+    PUSHER_SECRET: z.string(),
+    NEXT_PUBLIC_PUSHER_KEY: z.string(),
+    NEXT_PUBLIC_PUSHER_CLUSTER: z.string(),
+
     NEXT_PUBLIC_UPSTASH_REDIS_REST_URL: z.string(),
     NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN: z.string(),
 

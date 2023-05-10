@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth';
 import { removeUserFriendRequest } from '@/lib/redis/api';
 import { z } from 'zod';
+import { denyFriendRequestTrigger } from '@/lib/pusher/denyFriendRequest';
 
 export async function POST(req: Request) {
     try {
@@ -15,6 +16,7 @@ export async function POST(req: Request) {
         const { id: idToDeny } = z.object({ id: z.string() }).parse(body);
 
         await removeUserFriendRequest(session.user.id, idToDeny);
+        await denyFriendRequestTrigger(session.user.id);
 
         return new Response('OK');
     } catch (error) {
