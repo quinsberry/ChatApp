@@ -10,6 +10,7 @@ import {
 } from '@/lib/redis/api';
 import { addFriendTrigger } from '@/lib/pusher/addFriend';
 import { UserScheme } from '@/lib/redis/models/model-guards';
+import { removeFriendRequestTrigger } from '@/lib/pusher/removeSendRequest';
 
 export async function POST(req: Request) {
     try {
@@ -29,6 +30,9 @@ export async function POST(req: Request) {
         if (isAlreadyFriend) {
             // if users are already friends but request is still exists, remove it.
             await removeUserFriendRequest(session.user.id, userIdToAdd);
+            const friend = await getUserById(userIdToAdd);
+            const parsedFriend = UserScheme.parse(friend);
+            await addFriendTrigger(session.user.id, parsedFriend);
             return new Response('OK');
         }
 
@@ -47,8 +51,18 @@ export async function POST(req: Request) {
             addUserToFriendsList(session.user.id, userIdToAdd),
             addUserToFriendsList(userIdToAdd, session.user.id),
             removeUserFriendRequest(session.user.id, userIdToAdd),
+            addFriendTrigger(userIdToAdd, parsedUser),
+            addFriendTrigger(session.user.id, parsedFriend),
         ]);
-        await Promise.all([addFriendTrigger(userIdToAdd, parsedUser), addFriendTrigger(session.user.id, parsedFriend)]);
+
+        const hasFriendMyFriendRequest = await checkIfUserHasAFriendRequest(userIdToAdd, session.user.id);
+        if (hasFriendMyFriendRequest) {
+            await Promise.all([
+                removeUserFriendRequest(userIdToAdd, session.user.id),
+                removeFriendRequestTrigger(userIdToAdd, session.user.id),
+            ]);
+        }
+
         return new Response('OK');
     } catch (error) {
         if (error instanceof z.ZodError) {

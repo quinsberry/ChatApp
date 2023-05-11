@@ -4,6 +4,7 @@ import { Check, UserPlus, X } from 'lucide-react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { friendsRequestSubscribe } from '@/lib/pusher/friendsRequest';
+import { removeFriendRequestSubscribe } from '@/lib/pusher/removeSendRequest';
 
 interface FriendRequestsProps {
     sessionId: string;
@@ -16,10 +17,16 @@ export const FriendRequests: FunctionComponent<FriendRequestsProps> = ({ session
     const [friendRequests, setFriendRequests] = useState<IncomingFriendRequest[]>(incomingFriendsRequests);
 
     useEffect(() => {
-        const unsubscribe = friendsRequestSubscribe(sessionId, ({ senderId, senderEmail }) =>
+        const unsubscribe1 = friendsRequestSubscribe(sessionId, ({ senderId, senderEmail }) =>
             setFriendRequests(prev => [...prev, { senderId, senderEmail }])
         );
-        return unsubscribe;
+        const unsubscribe2 = removeFriendRequestSubscribe(sessionId, senderId => {
+            setFriendRequests(prev => prev.filter(request => request.senderId !== senderId));
+        });
+        return () => {
+            unsubscribe1();
+            unsubscribe2();
+        };
     }, [sessionId]);
 
     const acceptFriend = async (senderId: string) => {
