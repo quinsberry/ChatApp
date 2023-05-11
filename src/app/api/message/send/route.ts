@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { authOptions } from '@/lib/auth/auth';
 import { getFriendIdsByUserId, getUserById, sendMessageToChat } from '@/lib/redis/api';
 import { MessageScheme } from '@/lib/redis/models/model-guards';
+import { parseChatHref } from '@/lib/utils/createChatHref';
 
 export async function POST(req: Request) {
     try {
@@ -15,7 +16,7 @@ export async function POST(req: Request) {
             return new Response('Unauthorized', { status: 401 });
         }
 
-        const [userId1, userId2] = chatId.split('--');
+        const [userId1, userId2] = parseChatHref(chatId);
 
         if (session.user.id !== userId1 && session.user.id !== userId2) {
             return new Response('Unauthorized', { status: 401 });

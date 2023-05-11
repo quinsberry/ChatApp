@@ -6,10 +6,11 @@ import Image from 'next/image';
 import { Messages } from '@/components/Messages';
 import { ChatInput } from '@/components/ChatInput';
 import type { Metadata } from 'next';
+import { parseChatHref } from '@/lib/utils/createChatHref';
 
 export async function generateMetadata({ params }: { params: { chatId: string } }): Promise<Metadata> {
     const session = await getServerSession(authOptions);
-    const [userId1, userId2] = params.chatId.split('--');
+    const [userId1, userId2] = parseChatHref(params.chatId);
     const defaultMetadata = { title: 'ChatApp | Chat' };
     if (!session) {
         return defaultMetadata;
@@ -38,7 +39,7 @@ const page = async ({ params }: PageProps) => {
     }
     const { user } = session;
 
-    const [userId1, userId2] = chatId.split('--');
+    const [userId1, userId2] = parseChatHref(chatId);
 
     if (user.id !== userId1 && user.id !== userId2) {
         notFound();
