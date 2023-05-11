@@ -6,11 +6,10 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from '@/components/common/Button';
 
 interface ChatInputProps {
-    chatPartner: User;
     chatId: string;
 }
 
-export const ChatInput: FunctionComponent<ChatInputProps> = ({ chatPartner, chatId }) => {
+export const ChatInput: FunctionComponent<ChatInputProps> = ({ chatId }) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [input, setInput] = useState('');

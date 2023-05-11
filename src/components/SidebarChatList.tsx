@@ -1,15 +1,10 @@
 'use client';
-import { Fragment, FunctionComponent, useEffect, useRef, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { Fragment, FunctionComponent, useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { createChatHref } from '@/lib/utils/createChatHref';
 import { addFriendSubscribe } from '@/lib/pusher/addFriend';
 import { cn } from '@/lib/utils/cn';
 import { newMessageSubscribe } from '@/lib/pusher/newMessage';
-
-interface ExtendedMessage extends Message {
-    senderImg: string;
-    senderName: string;
-}
 
 interface SidebarChatListProps {
     sessionId: string;

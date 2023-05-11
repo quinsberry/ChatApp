@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth';
 import { notFound } from 'next/navigation';
-import { getAllMessagesFromChat, getUserById } from '@/lib/redis/api';
+import { getMessagesFromChat, getUserById } from '@/lib/redis/api';
 import Image from 'next/image';
 import { Messages } from '@/components/Messages';
 import { ChatInput } from '@/components/ChatInput';
@@ -49,7 +49,7 @@ const page = async ({ params }: PageProps) => {
     if (chatPartner === null) {
         notFound();
     }
-    const initialMessages = (await getAllMessagesFromChat(chatId)).reverse();
+    const initialMessages = (await getMessagesFromChat(chatId)).reverse();
     return (
         <div className='flex h-full max-h-[calc(100vh-6rem)] flex-1 flex-col justify-between'>
             <div className='flex justify-between border-b-2 border-gray-200 py-3 sm:items-center'>
@@ -83,7 +83,7 @@ const page = async ({ params }: PageProps) => {
                 sessionId={session.user.id}
                 initialMessages={initialMessages}
             />
-            <ChatInput chatId={chatId} chatPartner={chatPartner} />
+            <ChatInput chatId={chatId} />
         </div>
     );
 };

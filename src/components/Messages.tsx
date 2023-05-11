@@ -1,5 +1,5 @@
 'use client';
-import { FunctionComponent, useEffect, useRef, useState } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils/cn';
