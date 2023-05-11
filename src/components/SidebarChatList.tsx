@@ -1,5 +1,5 @@
 'use client';
-import { Fragment, FunctionComponent, useEffect, useState } from 'react';
+import { Fragment, FunctionComponent, useEffect, useRef, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { createChatHref } from '@/lib/utils/createChatHref';
 import { addFriendSubscribe } from '@/lib/pusher/addFriend';
@@ -17,7 +17,6 @@ interface SidebarChatListProps {
 }
 
 export const SidebarChatList: FunctionComponent<SidebarChatListProps> = ({ sessionId, friends }) => {
-    const router = useRouter();
     const pathname = usePathname();
     const [unseenMessages, setUnseenMessages] = useState<Message[]>([]);
     const [activeChats, setActiveChats] = useState<User[]>(friends);
@@ -42,7 +41,7 @@ export const SidebarChatList: FunctionComponent<SidebarChatListProps> = ({ sessi
             unsubscribe1();
             unsubscribe2();
         };
-    }, [pathname, sessionId, router]);
+    }, [pathname, sessionId]);
 
     useEffect(() => {
         if (pathname?.includes('chat')) {
