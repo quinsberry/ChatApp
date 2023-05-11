@@ -3,8 +3,9 @@ import { getServerSession } from 'next-auth';
 import { z } from 'zod';
 import { authOptions } from '@/lib/auth/auth';
 import { getFriendIdsByUserId, getUserById, sendMessageToChat } from '@/lib/redis/api';
-import { MessageScheme } from '@/lib/redis/models/model-guards';
 import { parseChatHref } from '@/lib/utils/createChatHref';
+import { incomingMessageTrigger } from '@/lib/pusher/incomingMessage';
+import { newMessageTrigger } from '@/lib/pusher/newMessage';
 
 export async function POST(req: Request) {
     try {
@@ -38,14 +39,19 @@ export async function POST(req: Request) {
 
         const timestamp = Date.now();
 
-        const messageData: Message = {
+        const message: Message = {
             id: nanoid(),
             senderId: session.user.id,
             text,
             timestamp,
         };
 
-        const message = MessageScheme.parse(messageData);
+        await incomingMessageTrigger(chatId, message);
+        await newMessageTrigger(friendId, {
+            ...message,
+            senderName: sender.name,
+            senderImg: sender.image,
+        });
 
         await sendMessageToChat(chatId, message, timestamp);
 

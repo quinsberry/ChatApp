@@ -1,8 +1,9 @@
 'use client';
-import { FunctionComponent, useRef, useState } from 'react';
+import { FunctionComponent, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils/cn';
+import { incomingMessageSubscribe } from '@/lib/pusher/incomingMessage';
 
 interface MessagesProps {
     initialMessages: Message[];
@@ -20,7 +21,11 @@ export const Messages: FunctionComponent<MessagesProps> = ({
     sessionImg,
 }) => {
     const [messages, setMessages] = useState<Message[]>(initialMessages);
-    const scrollDownRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const unsubscribe = incomingMessageSubscribe(chatId, message => setMessages(prev => [message, ...prev]));
+        return unsubscribe;
+    }, [chatId]);
 
     const formatTimestamp = (timestamp: number) => {
         return format(timestamp, 'HH:mm');
@@ -35,8 +40,6 @@ export const Messages: FunctionComponent<MessagesProps> = ({
                     'flex-col items-center justify-center': messages.length === 0,
                 }
             )}>
-            <div ref={scrollDownRef} />
-
             {messages.length === 0 ? (
                 <span className='text-sm text-gray-500'>No messages here yet</span>
             ) : (

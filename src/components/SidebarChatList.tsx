@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { createChatHref } from '@/lib/utils/createChatHref';
 import { addFriendSubscribe } from '@/lib/pusher/addFriend';
 import { cn } from '@/lib/utils/cn';
+import { newMessageSubscribe } from '@/lib/pusher/newMessage';
 
 interface ExtendedMessage extends Message {
     senderImg: string;
@@ -23,8 +24,23 @@ export const SidebarChatList: FunctionComponent<SidebarChatListProps> = ({ sessi
 
     useEffect(() => {
         const unsubscribe1 = addFriendSubscribe(sessionId, newFriend => setActiveChats(prev => [...prev, newFriend]));
+        const unsubscribe2 = newMessageSubscribe(sessionId, message => {
+            const shouldNotify = pathname !== `/dashboard/chat/${createChatHref(sessionId, message.senderId)}`;
+            if (!shouldNotify) return;
+
+            setUnseenMessages(prev => [
+                ...prev,
+                {
+                    id: message.id,
+                    senderId: message.senderId,
+                    text: message.text,
+                    timestamp: message.timestamp,
+                },
+            ]);
+        });
         return () => {
             unsubscribe1();
+            unsubscribe2();
         };
     }, [pathname, sessionId, router]);
 

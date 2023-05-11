@@ -16,11 +16,12 @@ export const ChatInput: FunctionComponent<ChatInputProps> = ({ chatPartner, chat
     const [input, setInput] = useState('');
 
     const sendMessage = async () => {
-        if (!input) return;
+        const text = input.trim();
+        if (!text) return;
         setIsLoading(true);
 
         try {
-            await axios.post('/api/message/send', { text: input, chatId });
+            await axios.post('/api/message/send', { text, chatId });
             setInput('');
             textareaRef.current?.focus();
         } catch (error) {
