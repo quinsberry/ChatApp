@@ -25,15 +25,18 @@ const DashboardPage: () => Promise<JSX.Element> = async () => {
     );
     return (
         <div className='container py-12'>
-            <h1 className='mb-8 text-5xl font-bold'>Recent chats</h1>
+            <h1 className='mb-8 text-3xl font-bold md:text-5xl'>Recent chats</h1>
             {friendsWithLastMessage.length === 0 ? (
                 <p className='text-sm text-zinc-500'>No recent chats</p>
             ) : (
                 friendsWithLastMessage.map(friend => (
-                    <div key={friend.id} className='rounded-md border border-zinc-200 bg-zinc-50 p-3'>
+                    <div key={friend.id} className='relative rounded-md border border-zinc-200 bg-zinc-50 p-3'>
+                        <div className='absolute inset-y-0 right-2 flex items-center md:right-4'>
+                            <ChevronRight className='h-7 w-7 text-zinc-400' />
+                        </div>
                         <Link
                             href={`/dashboard/chat/${createChatHref(session.user.id, friend.id)}`}
-                            className='sm:flex'>
+                            className='relative sm:flex'>
                             <div className='mb-4 flex-shrink-0 sm:mb-0 sm:mr-4'>
                                 <div className='relative h-6 w-6'>
                                     <Image
@@ -53,9 +56,6 @@ const DashboardPage: () => Promise<JSX.Element> = async () => {
                                     </span>
                                     {friend.lastMessage.text}
                                 </p>
-                            </div>
-                            <div className='flex items-center'>
-                                <ChevronRight className='h-7 w-7 text-zinc-400' />
                             </div>
                         </Link>
                     </div>

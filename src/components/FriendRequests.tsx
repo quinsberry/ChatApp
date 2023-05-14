@@ -50,9 +50,9 @@ export const FriendRequests: FunctionComponent<FriendRequestsProps> = ({ session
                 <p className='text-sm text-zinc-500'>No new requests</p>
             ) : (
                 friendRequests.map(request => (
-                    <div key={request.senderId} className='flex items-center gap-4'>
+                    <div key={request.senderId} className='flex items-center gap-2 md:gap-4'>
                         <UserPlus className='text-black' />
-                        <p className='text-lg font-medium'>{request.senderEmail}</p>
+                        <p className='w-8 flex-1 break-words text-lg font-medium'>{request.senderEmail}</p>
                         <button
                             onClick={() => acceptFriend(request.senderId)}
                             disabled={isSendingRequest}

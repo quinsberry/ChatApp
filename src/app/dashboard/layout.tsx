@@ -7,25 +7,20 @@ import Image from 'next/image';
 import { Logo } from '@/components/common/icons/Logo';
 import { SignOutButton } from '@/components/SignOutButton';
 import { FriendRequestsSidebarOption } from '@/components/FriendRequestsSidebarOption';
-import { UserPlus } from 'lucide-react';
 import { getFriendsByUserId, getUserFriendRequestIds } from '@/lib/redis/api';
 import { SidebarChatList } from '@/components/SidebarChatList';
+import { MobileChatLayout } from '@/components/MobileChatLayout';
+import { DashboardIcon, DashboardIcons } from '@/components/DashboardIcons';
 
 interface LayoutProps {
     children: ReactNode;
 }
-interface SidebarOption {
+export interface SidebarOption {
     id: number;
     name: string;
     href: string;
-    Icon: Icon;
+    Icon: DashboardIcon;
 }
-
-const Icons = {
-    Logo,
-    UserPlus,
-};
-type Icon = keyof typeof Icons;
 
 const sidebarOptions: SidebarOption[] = [
     {
@@ -50,7 +45,15 @@ const Layout = async ({ children }: LayoutProps) => {
     const unseenRequestCount = (await getUserFriendRequestIds(session.user.id)).length;
     return (
         <div className='flex h-screen w-full'>
-            <aside className='flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6'>
+            <div className='md:hidden'>
+                <MobileChatLayout
+                    friends={friends}
+                    session={session}
+                    sidebarOptions={sidebarOptions}
+                    unseenRequestCount={unseenRequestCount}
+                />
+            </div>
+            <aside className='hidden h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 md:flex'>
                 <Link href='/dashboard' className='flex h-16 shrink-0 items-center'>
                     <Logo className='h-8 w-auto' />
                 </Link>
@@ -63,7 +66,7 @@ const Layout = async ({ children }: LayoutProps) => {
                             <div className='text-xs font-semibold leading-6 text-gray-400'>Overview</div>
                             <ul role='list' className='-mx-2 mt-2 space-y-1'>
                                 {sidebarOptions.map(option => {
-                                    const Icon = Icons[option.Icon];
+                                    const Icon = DashboardIcons[option.Icon];
                                     return (
                                         <li key={option.id}>
                                             <Link
@@ -112,7 +115,7 @@ const Layout = async ({ children }: LayoutProps) => {
                     </ul>
                 </nav>
             </aside>
-            <div className='container max-h-screen w-full py-16 md:py-12'>{children}</div>
+            <div className='container max-h-screen w-full py-16 md:px-6 md:py-12'>{children}</div>
         </div>
     );
 };
