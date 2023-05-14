@@ -9,7 +9,6 @@ const envVariables = z.object({
     NEXT_PUBLIC_UPSTASH_REDIS_REST_URL: z.string(),
     NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN: z.string(),
 
-    NEXTAUTH_URL: z.string(),
     NEXTAUTH_SECRET: z.string(),
 
     GOOGLE_CLIENT_ID: z.string(),
