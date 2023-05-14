@@ -90,8 +90,8 @@ const Layout = async ({ children }: LayoutProps) => {
                             </ul>
                         </li>
                         <li className='-mx-6 mt-auto flex items-center'>
-                            <div className='flex flex-1 items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900'>
-                                <div className='relative h-8 w-8 bg-gray-50'>
+                            <div className='flex w-full flex-1 items-center justify-between px-6 py-3 text-sm font-semibold leading-6 text-gray-900'>
+                                <div className='relative mr-2 h-8 w-8 shrink-0 bg-gray-50'>
                                     <Image
                                         fill={true}
                                         referrerPolicy='no-referrer'
@@ -102,15 +102,16 @@ const Layout = async ({ children }: LayoutProps) => {
                                 </div>
 
                                 <span className='sr-only'>Your profile</span>
-                                <div className='flex flex-col'>
+                                <div className='flex flex-col overflow-hidden'>
                                     <span aria-hidden={true}>{session.user.name}</span>
-                                    <span className='text-xs text-zinc-400' aria-hidden={true}>
+                                    <span
+                                        className='overflow-hidden overflow-ellipsis text-xs text-zinc-400'
+                                        aria-hidden={true}>
                                         {session.user.email}
                                     </span>
                                 </div>
+                                <SignOutButton className='aspect-square h-full' />
                             </div>
-
-                            <SignOutButton className='aspect-square h-full' />
                         </li>
                     </ul>
                 </nav>
