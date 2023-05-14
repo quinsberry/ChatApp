@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth';
 import { notFound } from 'next/navigation';
@@ -41,8 +41,11 @@ const Layout = async ({ children }: LayoutProps) => {
     if (!session) {
         notFound();
     }
-    const friends = await getFriendsByUserId(session.user.id);
-    const unseenRequestCount = (await getUserFriendRequestIds(session.user.id)).length;
+    const [friends, requestsIds] = await Promise.all([
+        getFriendsByUserId(session.user.id),
+        getUserFriendRequestIds(session.user.id),
+    ]);
+    const unseenRequestCount = requestsIds.length;
     return (
         <div className='flex h-screen w-full'>
             <div className='md:hidden'>
@@ -54,7 +57,7 @@ const Layout = async ({ children }: LayoutProps) => {
                 />
             </div>
             <aside className='hidden h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 md:flex'>
-                <Link href='/dashboard' className='flex h-16 shrink-0 items-center'>
+                <Link href='/dashboard' className='flex h-16 shrink-0 items-center' aria-label='Go to the dashboard'>
                     <Logo className='h-8 w-auto' />
                 </Link>
                 <nav className='flex flex-1 flex-col'>
@@ -63,7 +66,7 @@ const Layout = async ({ children }: LayoutProps) => {
                             <SidebarChatList sessionId={session.user.id} friends={friends} />
                         </li>
                         <li>
-                            <div className='text-xs font-semibold leading-6 text-gray-400'>Overview</div>
+                            <div className='text-xs font-semibold leading-6 text-gray-500'>Overview</div>
                             <ul role='list' className='-mx-2 mt-2 space-y-1'>
                                 {sidebarOptions.map(option => {
                                     const Icon = DashboardIcons[option.Icon];
@@ -72,7 +75,7 @@ const Layout = async ({ children }: LayoutProps) => {
                                             <Link
                                                 href={option.href}
                                                 className='group flex gap-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600'>
-                                                <span className='flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-[0.625rem] font-medium text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600'>
+                                                <span className='flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-[0.625rem] font-medium text-gray-500 group-hover:border-indigo-600 group-hover:text-indigo-600'>
                                                     <Icon className='h-4 w-4' />
                                                 </span>
 

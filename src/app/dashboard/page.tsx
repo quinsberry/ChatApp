@@ -36,6 +36,7 @@ const DashboardPage: () => Promise<JSX.Element> = async () => {
                         </div>
                         <Link
                             href={`/dashboard/chat/${createChatHref(session.user.id, friend.id)}`}
+                            aria-label={`Go to chat with ${friend.name}`}
                             className='relative sm:flex'>
                             <div className='mb-4 flex-shrink-0 sm:mb-0 sm:mr-4'>
                                 <div className='relative h-6 w-6'>
@@ -49,7 +50,7 @@ const DashboardPage: () => Promise<JSX.Element> = async () => {
                                 </div>
                             </div>
                             <div className='flex-1'>
-                                <h4 className='text-lg font-semibold'>{friend.name}</h4>
+                                <h2 className='text-lg font-semibold'>{friend.name}</h2>
                                 <p className='mt-1 max-w-md line-clamp-2'>
                                     <span className='text-zinc-400'>
                                         {friend.lastMessage.senderId === session.user.id ? 'You: ' : ''}

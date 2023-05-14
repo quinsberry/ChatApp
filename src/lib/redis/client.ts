@@ -11,7 +11,6 @@ export const clientRedis = async <C extends keyof ExcludeNonFunctionPropertyName
             headers: {
                 Authorization: `Bearer ${process.env.NEXT_PUBLIC_UPSTASH_REDIS_REST_TOKEN}`,
             },
-            cache: 'no-store',
         });
         const json = await response.json();
         try {

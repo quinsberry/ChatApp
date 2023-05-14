@@ -20,7 +20,7 @@ export const SignOutButton: FunctionComponent<SignOutButtonProps> = ({ ...props 
             });
     };
     return (
-        <Button {...props} variant='ghost' onClick={onSignOutClick}>
+        <Button {...props} variant='ghost' aria-label='Sign Out' onClick={onSignOutClick}>
             {isSigningOut ? <Loader2 className='h-4 w-4' /> : <LogOut className='h-4 w-4' />}
         </Button>
     );

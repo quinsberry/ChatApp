@@ -1,5 +1,5 @@
 'use client';
-import React, { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/common/Button';
 

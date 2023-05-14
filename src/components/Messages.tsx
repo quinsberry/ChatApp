@@ -65,7 +65,7 @@ export const Messages: FunctionComponent<MessagesProps> = ({
                                             'rounded-bl-none': !hasNextMessageFromSameUser && !isCurrentUser,
                                         })}>
                                         {message.text}{' '}
-                                        <span className='ml-2 text-xs text-gray-400'>
+                                        <span className='ml-2 text-xs text-gray-500'>
                                             {formatTimestamp(message.timestamp)}
                                         </span>
                                     </span>

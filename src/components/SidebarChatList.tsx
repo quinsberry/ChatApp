@@ -47,7 +47,7 @@ export const SidebarChatList: FunctionComponent<SidebarChatListProps> = ({ sessi
     return (
         <Fragment>
             {activeChats.length > 0 ? (
-                <div className='text-xs font-semibold leading-6 text-gray-400'>Your chats</div>
+                <div className='text-xs font-semibold leading-6 text-gray-500'>Your chats</div>
             ) : null}
             <ul
                 role='list'

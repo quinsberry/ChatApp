@@ -51,7 +51,7 @@ export const ChatInput: FunctionComponent<ChatInputProps> = ({ chatId }) => {
                     onChange={onTextareaChange}
                     maxRows={10}
                     placeholder='Write a message...'
-                    className='block w-full resize-none border-0 bg-transparent text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:py-1.5 sm:text-sm sm:leading-6'
+                    className='block w-full resize-none border-0 bg-transparent text-gray-900 placeholder:text-gray-500 focus:ring-0 sm:py-1.5 sm:text-sm sm:leading-6'
                 />
 
                 <div onClick={() => textareaRef.current?.focus()} className='py-2' aria-hidden='true'>

@@ -72,7 +72,7 @@ export const MobileChatLayout: FunctionComponent<MobileChatLayoutProps> = ({
                                                     <div className='ml-3 flex h-7 items-center'>
                                                         <button
                                                             type='button'
-                                                            className='rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+                                                            className='rounded-md bg-white text-gray-500 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
                                                             onClick={() => setOpen(false)}>
                                                             <span className='sr-only'>Close panel</span>
                                                             <X className='h-6 w-6' aria-hidden='true' />
@@ -92,7 +92,7 @@ export const MobileChatLayout: FunctionComponent<MobileChatLayoutProps> = ({
                                                         </li>
 
                                                         <li>
-                                                            <div className='text-xs font-semibold leading-6 text-gray-400'>
+                                                            <div className='text-xs font-semibold leading-6 text-gray-500'>
                                                                 Overview
                                                             </div>
                                                             <ul role='list' className='-mx-2 mt-2 space-y-1'>
@@ -103,7 +103,7 @@ export const MobileChatLayout: FunctionComponent<MobileChatLayoutProps> = ({
                                                                             <Link
                                                                                 href={option.href}
                                                                                 className='group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600'>
-                                                                                <span className='flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-[0.625rem] font-medium text-gray-400 group-hover:border-indigo-600 group-hover:text-indigo-600'>
+                                                                                <span className='flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-[0.625rem] font-medium text-gray-500 group-hover:border-indigo-600 group-hover:text-indigo-600'>
                                                                                     <Icon className='h-4 w-4' />
                                                                                 </span>
                                                                                 <span className='truncate'>
@@ -123,11 +123,13 @@ export const MobileChatLayout: FunctionComponent<MobileChatLayoutProps> = ({
                                                             </ul>
                                                         </li>
 
-                                                        <li className='-ml-6 mt-auto flex items-center'>
-                                                            <div className='flex flex-1 items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900'>
-                                                                <div className='relative h-8 w-8 bg-gray-50'>
+                                                        <li className='mt-auto flex items-center'>
+                                                            <div className='flex w-full flex-1 items-center justify-between py-3 text-sm font-semibold leading-6 text-gray-900'>
+                                                                <div className='relative mr-2 h-8 w-8 shrink-0 bg-gray-50'>
                                                                     <Image
-                                                                        fill
+                                                                        fill={true}
+                                                                        width={32}
+                                                                        height={32}
                                                                         referrerPolicy='no-referrer'
                                                                         className='rounded-full'
                                                                         src={session.user.image || ''}
@@ -136,17 +138,16 @@ export const MobileChatLayout: FunctionComponent<MobileChatLayoutProps> = ({
                                                                 </div>
 
                                                                 <span className='sr-only'>Your profile</span>
-                                                                <div className='flex flex-col'>
+                                                                <div className='flex flex-1 flex-col overflow-hidden'>
                                                                     <span aria-hidden='true'>{session.user.name}</span>
                                                                     <span
-                                                                        className='text-xs text-zinc-400'
+                                                                        className='overflow-hidden overflow-ellipsis text-xs text-zinc-400'
                                                                         aria-hidden='true'>
                                                                         {session.user.email}
                                                                     </span>
                                                                 </div>
+                                                                <SignOutButton className='aspect-square h-full' />
                                                             </div>
-
-                                                            <SignOutButton className='aspect-square h-full' />
                                                         </li>
                                                     </ul>
                                                 </nav>
