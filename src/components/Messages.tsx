@@ -4,6 +4,13 @@ import Image from 'next/image';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils/cn';
 import { incomingMessageSubscribe } from '@/lib/pusher/incomingMessage';
+import { useInfiniteScroll } from '@/lib/utils/useInfiniteScroll';
+import { getLastMessagesFromChat } from '@/lib/redis/api';
+import { Loader2 } from 'lucide-react';
+
+const formatTimestamp = (timestamp: number) => {
+    return format(timestamp, 'HH:mm');
+};
 
 interface MessagesProps {
     initialMessages: Message[];
@@ -13,6 +20,8 @@ interface MessagesProps {
     chatPartner: User;
 }
 
+export const DEFAULT_MESSAGES_SIZE = 50;
+
 export const Messages: FunctionComponent<MessagesProps> = ({
     initialMessages,
     sessionId,
@@ -21,19 +30,30 @@ export const Messages: FunctionComponent<MessagesProps> = ({
     sessionImg,
 }) => {
     const [messages, setMessages] = useState<Message[]>(initialMessages);
+    const [lastMessageFetched, setLastMessageFetched] = useState(initialMessages.length < DEFAULT_MESSAGES_SIZE);
+
+    const ref = useInfiniteScroll({
+        callback: async () => {
+            const receivedMessages = await getLastMessagesFromChat(chatId, messages.length, DEFAULT_MESSAGES_SIZE);
+            if (receivedMessages.length < DEFAULT_MESSAGES_SIZE) {
+                setLastMessageFetched(true);
+            }
+            const orderedMessages = receivedMessages.reverse();
+            setMessages(prev => [...prev, ...orderedMessages]);
+        },
+        trigger: messages.length,
+        direction: 'from-bottom-to-top',
+    });
 
     useEffect(() => {
         const unsubscribe = incomingMessageSubscribe(chatId, message => setMessages(prev => [message, ...prev]));
         return unsubscribe;
     }, [chatId]);
 
-    const formatTimestamp = (timestamp: number) => {
-        return format(timestamp, 'HH:mm');
-    };
-
     return (
         <div
             id='messages'
+            ref={ref}
             className={cn(
                 'scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch flex h-full flex-1 flex-col-reverse gap-4 overflow-y-auto p-3',
                 {
@@ -89,6 +109,11 @@ export const Messages: FunctionComponent<MessagesProps> = ({
                         </div>
                     );
                 })
+            )}
+            {!lastMessageFetched && (
+                <div className='flex w-full justify-center'>
+                    <Loader2 className=' animate-spin' />
+                </div>
             )}
         </div>
     );

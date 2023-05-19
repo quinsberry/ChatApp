@@ -1,9 +1,9 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth';
 import { notFound } from 'next/navigation';
-import { getMessagesFromChat, getUserById } from '@/lib/redis/api';
+import { getLastMessagesFromChat, getUserById } from '@/lib/redis/api';
 import Image from 'next/image';
-import { Messages } from '@/components/Messages';
+import { DEFAULT_MESSAGES_SIZE, Messages } from '@/components/Messages';
 import { ChatInput } from '@/components/ChatInput';
 import type { Metadata } from 'next';
 import { parseChatHref } from '@/lib/utils/createChatHref';
@@ -49,7 +49,8 @@ const page = async ({ params }: PageProps) => {
     if (chatPartner === null) {
         notFound();
     }
-    const initialMessages = (await getMessagesFromChat(chatId)).reverse();
+    const DEFAULT_MESSAGES_SIZE = 50;
+    const initialMessages = (await getLastMessagesFromChat(chatId, 0, DEFAULT_MESSAGES_SIZE)).reverse();
     return (
         <div className='flex h-full max-h-[calc(100vh-6rem)] flex-1 flex-col justify-between'>
             <div className='flex justify-between border-b-2 border-gray-200 py-3 sm:items-center'>

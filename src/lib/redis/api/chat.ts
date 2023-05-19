@@ -2,9 +2,15 @@ import { redis } from '@/lib/redis';
 import { MessageScheme } from '@/lib/redis/models/model-guards';
 import { ZodError } from 'zod';
 
-export const getMessagesFromChat = async (chatId: string): Promise<Message[]> => {
+export const getLastMessagesFromChat = async (
+    chatId: string,
+    offset: number = 0,
+    count: number = 0
+): Promise<Message[]> => {
     try {
-        const response = await redis('zrange', `chat:${chatId}:messages`, 0, -1);
+        const start = -offset - 1;
+        const end = count === 0 ? 0 : start - count - 1;
+        const response = await redis('zrange', `chat:${chatId}:messages`, end, start);
         return MessageScheme.array().parse(response);
     } catch (error) {
         if (error instanceof ZodError) {

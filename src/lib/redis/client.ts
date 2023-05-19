@@ -14,7 +14,7 @@ export const clientRedis = async <C extends keyof ExcludeNonFunctionPropertyName
         });
         const json = await response.json();
         try {
-            return JSON.parse(json.result);
+            return Array.isArray(json.result) ? json.result.map(JSON.parse) : JSON.parse(json.result);
         } catch {
             return json.result;
         }
