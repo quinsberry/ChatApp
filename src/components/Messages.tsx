@@ -112,7 +112,7 @@ export const Messages: FunctionComponent<MessagesProps> = ({
             )}
             {!lastMessageFetched && (
                 <div className='flex w-full justify-center'>
-                    <Loader2 className=' animate-spin' />
+                    <Loader2 className='animate-spin' />
                 </div>
             )}
         </div>
